@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        
+        .calc {
+            background: #999;
+            padding: 10px;
+            width: 250px;
+            margin: 0;
+            border-radius: 5px;
+        }
+        
+        .display {
+            background: #555;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+        
+        #screen {
+            width: 180px;
+            font-size: 16px;
+            padding: 5px;
+            border: none;
+            text-align: right;
+        }
+        
+        .title {
+            color: white;
+            font-style: italic;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        button {
+            width: 50px;
+            height: 40px;
+            margin: 2px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #333;
+            border-radius: 3px;
+        }
+        
+        button:hover {
+            background: #ddd;
+        }
+        
+        .op {
+            background: #ff9500;
+            color: white;
+        }
+        
+        .clear {
+            background: #ff3333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="calc">
+        <div class="display">
+             <input type="text" id="screen" readonly>
+             <div class="title">KALKULATOR XII RPL</div>
+        </div>
+        
+        <button onclick="input('7')">7</button>
+        <button onclick="input('8')">8</button>
+        <button onclick="input('9')">9</button>
+        <button onclick="input('+')" class="op">+</button><br>
+        
+        <button onclick="input('4')">4</button>
+        <button onclick="input('5')">5</button>
+        <button onclick="input('6')">6</button>
+        <button onclick="input('-')" class="op">-</button><br>
+        
+        <button onclick="input('1')">1</button>
+        <button onclick="input('2')">2</button>
+        <button onclick="input('3')">3</button>
+        <button onclick="input('*')" class="op">x</button><br>
+        
+        <button onclick="clearAll()" class="clear">C</button>
+        <button onclick="input('0')">0</button>
+        <button onclick="calc()" class="op">=</button>
+        <button onclick="input('/')" class="op">÷</button>
+    </div>
+    <script>
+        const s = document.getElementById('screen');
+        
+        function input(v) {
+            s.value += v;
+        }
+        
+        function clearAll() {
+            s.value = '';
+        }
+        
+        function calc() {
+            try {
+                s.value = eval(s.value.replace(/x/g, '*'));
+            } catch {
+                s.value = 'Error';
+            }
+        }
+    </script>
+</body>
+</html>
