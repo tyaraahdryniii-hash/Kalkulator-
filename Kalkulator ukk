@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kalkulator Lucu</title>
+  <style>
+    body {
+      background: #ffe6f0; /* warna pink pastel */
+      font-family: 'Comic Sans MS', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .kalkulator {
+      background: #fff0f5; /* warna pink muda */
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    .kalkulator h2 {
+      color: #d47fa6;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-size: 18px;
+      background: #fff;
+      color: #333;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .tombol {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      background: #ffd1dc;
+      color: #333;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #f9a3b5;
+    }
+  </style>
+</head>
+<body>
+  <div class="kalkulator">
+    <h2>💕 Kalkulator Tiaraa 💕</h2>
+    <input type="text" id="layar" disabled />
+    <div class="tombol">
+      <!-- Baris angka dan operator -->
+      <button onclick="tambahInput('7')">7</button>
+      <button onclick="tambahInput('8')">8</button>
+      <button onclick="tambahInput('9')">9</button>
+      <button onclick="tambahInput('/')">÷</button>
+
+      <button onclick="tambahInput('4')">4</button>
+      <button onclick="tambahInput('5')">5</button>
+      <button onclick="tambahInput('6')">6</button>
+      <button onclick="tambahInput('*')">×</button>
+
+      <button onclick="tambahInput('1')">1</button>
+      <button onclick="tambahInput('2')">2</button>
+      <button onclick="tambahInput('3')">3</button>
+      <button onclick="tambahInput('-')">−</button>
+
+      <button onclick="tambahInput('0')">0</button>
+      <button onclick="tambahInput('.')">.</button>
+      <button onclick="hitung()">=</button>
+      <button onclick="tambahInput('+')">+</button>
+
+      <button onclick="hapus()">C</button>
+      <button onclick="hapusSatu()">⌫</button>
+    </div>
+  </div>
+
+  <script>
+    // Fungsi menambahkan karakter ke layar
+    function tambahInput(value) {
+      document.getElementById("layar").value += value;
+    }
+
+    // Fungsi menghitung hasil dari input
+    function hitung() {
+      try {
+        document.getElementById("layar").value = eval(document.getElementById("layar").value);
+      } catch {
+        document.getElementById("layar").value = "Error";
+      }
+    }
+
+    // Fungsi menghapus semua isi layar
+    function hapus() {
+      document.getElementById("layar").value = "";
+    }
+
+    // Fungsi menghapus satu karakter terakhir
+    function hapusSatu() {
+      let layar = document.getElementById("layar").value;
+      document.getElementById("layar").value = layar.slice(0, -1);
+    }
+  </script>
+</body>
+</html>
