@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        .kalk {
+            margin: 0 40%;
+        }
+        .kalk .butt {
+            margin: 2px;
+            width: 48px;
+            height: 25px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <form name="kal" class="kalk">
+        <table border="1" width="230" height="150" style="background: #999;">
+            <tr>
+                <td height="30" style="background: #000;">
+                    <input type="text" name="Input" size="23">
+                    <span style="color: #ffffff;">&nbsp;<i>KALKULATOR XII RPL</i></span>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <!-- Baris 1 -->
+                    <input class="butt" type="button" value="7" onclick="kal.Input.value += '7'">
+                    <input class="butt" type="button" value="8" onclick="kal.Input.value += '8'">
+                    <input class="butt" type="button" value="9" onclick="kal.Input.value += '9'">
+                    <input class="butt" type="button" value="+" onclick="kal.Input.value += '+'">
+                    <br>
+
+                    <!-- Baris 2 -->
+                    <input class="butt" type="button" value="4" onclick="kal.Input.value += '4'">
+                    <input class="butt" type="button" value="5" onclick="kal.Input.value += '5'">
+                    <input class="butt" type="button" value="6" onclick="kal.Input.value += '6'">
+                    <input class="butt" type="button" value="-" onclick="kal.Input.value += '-'">
+                    <br>
+
+                    <!-- Baris 3 -->
+                    <input class="butt" type="button" value="1" onclick="kal.Input.value += '1'">
+                    <input class="butt" type="button" value="2" onclick="kal.Input.value += '2'">
+                    <input class="butt" type="button" value="3" onclick="kal.Input.value += '3'">
+                    <input class="butt" type="button" value="x" onclick="kal.Input.value += '*'">
+                    <br>
+
+                    <!-- Baris 4 -->
+                    <input class="butt" type="button" value="C" onclick="kal.Input.value = ''">
+                    <input class="butt" type="button" value="0" onclick="kal.Input.value += '0'">
+                    <input class="butt" type="button" value="=" onclick="kal.Input.value = eval(kal.Input.value)">
+                    <input class="butt" type="button" value="/" onclick="kal.Input.value += '/'">
+                    <br>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
