@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Perhitungan Diskon</title>
+    <style>
+        /* ===== RESET CSS GLOBAL ===== */
+        /* Menghapus margin dan padding default browser, mengatur box-sizing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Padding dan border termasuk dalam width/height */
+        }
+ 
+        /* ===== STYLING BODY UTAMA ===== */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font modern */
+            background: linear-gradient(165deg, #157eea 0%, #864ba2 100%); /* Gradient background */
+            min-height: 100vh; /* Tinggi minimum 100% viewport */
+            display: flex; /* Layout flexbox */
+            justify-content: center; /* Posisi horizontal tengah */
+            align-items: center; /* Posisi vertikal tengah */
+            padding: 20px; /* Padding untuk responsive di mobile */
+        }
+ 
+        /* ===== CONTAINER UTAMA APLIKASI ===== */
+        .container {
+            background: rgba(255, 255, 255, 0.95); /* Background putih semi-transparan */
+            padding: 40px; /* Ruang dalam yang besar */
+            border-radius: 20px; /* Sudut melengkung besar */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); /* Bayangan dalam untuk depth */
+            backdrop-filter: blur(10px); /* Efek blur pada background */
+            max-width: 500px; /* Lebar maksimal container */
+            width: 100%; /* Lebar 100% dari parent */
+            transform: translateY(0); /* Posisi awal untuk animasi */
+            transition: transform 0.3s ease; /* Transisi smooth untuk hover */
+        }
+ 
+        /* ===== EFEK HOVER PADA CONTAINER ===== */
+        .container:hover {
+            transform: translateY(-5px); /* Naik 5px saat di-hover */
+        }
+ 
+        /* ===== STYLING JUDUL UTAMA ===== */
+        h1 {
+            text-align: center; /* Teks di tengah */
+            color: #333; /* Warna abu-abu */
+            margin-bottom: 30px; /* Jarak bawah */
+            font-size: 2.2rem; /* Ukuran font besar */
+            /* Gradient text effect */
+            background: linear-gradient(198deg, #882, #590);
+            -webkit-background-clip: text; /* Clip background ke teks (webkit) */
+            -webkit-text-fill-color: transparent; /* Teks transparan untuk menampilkan gradient */
+            background-clip: text; /* Clip background ke teks (standard) */
+        }
+ 
+        /* ===== STYLING GRUP FORM ===== */
+        .form-group {
+            margin-bottom: 25px; /* Jarak antar grup form */
+        }
+ 
+        /* ===== STYLING LABEL INPUT ===== */
+        label {
+            display: block; /* Tampil sebagai blok (baris baru) */
+            margin-bottom: 8px; /* Jarak dengan input */
+            font-weight: 600; /* Font semi-bold */
+            color: #354; /* Warna abu-abu sedang */
+            font-size: 1.1rem; /* Ukuran font sedikit lebih besar */
+        }
+ 
+        /* ===== STYLING INPUT NUMBER ===== */
+        input[type="number"] {
+            width: 100%; /* Lebar penuh */
+            padding: 15px; /* Padding dalam yang besar */
+            border: 2px solid #e1e5e9; /* Border abu-abu terang */
+            border-radius: 12px; /* Sudut melengkung */
+            font-size: 1.1rem; /* Ukuran font */
+            transition: all 0.3s ease; /* Transisi smooth untuk semua properti */
+            background: #f66; /* Background abu-abu sangat terang */
+        }
+ 
+        /* ===== EFEK FOCUS PADA INPUT ===== */
+        input[type="number"]:focus {
+            outline: none; /* Hilangkan outline default */
+            border-color: #667eea; /* Border biru saat focus */
+            background: white; /* Background putih saat focus */
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Shadow biru transparan */
+        }
+ 
+        /* ===== STYLING TOMBOL UTAMA ===== */
+        .btn {
+            width: 100%; /* Lebar penuh */
+            padding: 15px; /* Padding yang besar */
+            background: linear-gradient(135deg, #888, #222); /* Gradient background */
+            color: white; /* Teks putih */
+            border: none; /* Hilangkan border */
+            border-radius: 12px; /* Sudut melengkung */
+            font-size: 1.2rem; /* Ukuran font besar */
+            font-weight: 600; /* Font semi-bold */
+            cursor: pointer; /* Cursor pointer */
+            transition: all 0.3s ease; /* Transisi smooth */
+            margin-bottom: 20px; /* Jarak bawah */
+        }
+ 
+        /* ===== EFEK HOVER PADA TOMBOL ===== */
+        .btn:hover {
+            transform: translateY(-2px); /* Naik 2px */
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3); /* Shadow biru saat hover */
+        }
+ 
+        /* ===== EFEK ACTIVE PADA TOMBOL ===== */
+        .btn:active {
+            transform: translateY(0); /* Kembali ke posisi normal saat diklik */
+        }
+ 
+        /* ===== STYLING AREA HASIL ===== */
+        .result {
+            background: linear-gradient(195deg, #f7f9fa, #e9ecef); /* Gradient background abu-abu */
+            padding: 25px; /* Padding besar */
+            border-radius: 15px; /* Sudut melengkung */
+            margin-top: 20px; /* Jarak atas */
+            border-left: 5px solid #667eea; /* Border kiri biru sebagai aksen */
+            opacity: 0; /* Transparan secara default */
+            transform: translateY(20px); /* Posisi awal untuk animasi */
+            transition: all 0.5s ease; /* Transisi smooth untuk animasi masuk */
+        }
+ 
+        /* ===== CLASS UNTUK MENAMPILKAN HASIL ===== */
+        .result.show {
+            opacity: 1; /* Opasitas penuh */
+            transform: translateY(0); /* Posisi normal */
+        }
+ 
+        /* ===== STYLING JUDUL HASIL ===== */
+        .result h3 {
+            color: #333; /* Warna abu-abu gelap */
+            margin-bottom: 15px; /* Jarak bawah */
+            font-size: 1.3rem; /* Ukuran font */
+        }
+ 
+        /* ===== STYLING ITEM HASIL ===== */
+        .result-item {
+            display: flex; /* Layout flexbox */
+            justify-content: space-between; /* Ruang antara label dan nilai */
+            margin-bottom: 12px; /* Jarak bawah */
+            padding: 10px; /* Padding dalam */
+            background: white; /* Background putih */
+            border-radius: 8px; /* Sudut melengkung kecil */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Shadow halus */
+        }
+ 
+        /* ===== STYLING LABEL HASIL ===== */
+        .result-label {
+            font-weight: 600; /* Font semi-bold */
+            color: #555; /* Warna abu-abu sedang */
+        }
+ 
+        /* ===== STYLING NILAI HASIL ===== */
+        .result-value {
+            font-weight: 700; /* Font bold */
+            color: #667eee; /* Warna biru */
+        }
+ 
+        /* ===== STYLING PESAN ERROR ===== */
+        .error {
+            color: #dc3545; /* Warna merah */
+            font-size: 0.9rem; /* Ukuran font kecil */
+            margin-top: 5px; /* Jarak atas */
+            display: none; /* Tersembunyi secara default */
+        }
+ 
+        /* ===== STYLING UNTUK NILAI MATA UANG ===== */
+        .currency {
+            color: #28a745; /* Warna hijau untuk mata uang */
+            font-weight: bold; /* Font tebal */
+        }
+ 
+        /* ===== ANIMASI SHAKE UNTUK ERROR ===== */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); } /* Posisi normal */
+            25% { transform: translateX(-5px); } /* Geser kiri 5px */
+            75% { transform: translateX(5px); } /* Geser kanan 5px */
+        }
+ 
+        /* ===== CLASS UNTUK EFEK SHAKE ===== */
+        .shake {
+            animation: shake 0.5s ease-in-out; /* Animasi shake selama 0.5 detik */
+        }
+ 
+        /* ===== STYLING GRUP INPUT DENGAN PREFIX/SUFFIX ===== */
+        .input-group {
+            position: relative; /* Posisi relatif untuk positioning prefix/suffix */
+        }
+ 
+        /* ===== STYLING PREFIX INPUT (Rp) ===== */
+        .input-prefix {
+            position: absolute; /* Posisi absolut */
+            left: 15px; /* Jarak dari kiri */
+            top: 50%; /* Posisi vertikal tengah */
+            transform: translateY(-50%); /* Penyesuaian vertikal tengah */
+            color: #666; /* Warna abu-abu */
+            font-weight: 600; /* Font semi-bold */
+        }
+ 
+        /* ===== STYLING SUFFIX INPUT (%) ===== */
+        .input-suffix {
+            position: absolute; /* Posisi absolut */
+            right: 15px; /* Jarak dari kanan */
+            top: 50%; /* Posisi vertikal tengah */
+            transform: translateY(-50%); /* Penyesuaian vertikal tengah */
+            color: #666; /* Warna abu-abu */
+            font-weight: 600; /* Font semi-bold */
+        }
+ 
+        /* ===== PADDING KHUSUS UNTUK INPUT DENGAN PREFIX ===== */
+        input.with-prefix {
+            padding-left: 45px; /* Padding kiri lebih besar untuk memberi ruang prefix */
+        }
+ 
+        /* ===== PADDING KHUSUS UNTUK INPUT DENGAN SUFFIX ===== */
+        input.with-suffix {
+            padding-right: 45px; /* Padding kanan lebih besar untuk memberi ruang suffix */
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== CONTAINER UTAMA APLIKASI ===== -->
+    <div class="container">
+        <!-- ===== JUDUL APLIKASI DENGAN EMOJI ===== -->
+        <h1>🏷️ Kalkulator Diskon</h1>
+       
+        <!-- ===== FORM UTAMA UNTUK INPUT ===== -->
+        <form id="discountForm">
+            <!-- ===== INPUT HARGA ASLI ===== -->
+            <div class="form-group">
+                <label for="originalPrice">Harga Asli Barang:</label>
+                <div class="input-group">
+                    <!-- Prefix "Rp" untuk mata uang -->
+                    <span class="input-prefix">Rp</span>
+                    <!-- Input harga dengan validasi HTML5 -->
+                    <input type="number" id="originalPrice" class="with-prefix" placeholder="Masukkan harga asli" min="0" step="0.01" required>
+                </div>
+                <!-- Pesan error untuk harga (tersembunyi secara default) -->
+                <div class="error" id="priceError">Harga harus lebih dari 0</div>
+            </div>
+ 
+            <!-- ===== INPUT PERSENTASE DISKON ===== -->
+            <div class="form-group">
+                <label for="discountPercent">Persentase Diskon:</label>
+                <div class="input-group">
+                    <!-- Input diskon dengan validasi HTML5 -->
+                    <input type="number" id="discountPercent" class="with-suffix" placeholder="Masukkan persentase diskon" min="0" max="100" step="0.01" required>
+                    <!-- Suffix "%" untuk persentase -->
+                    <span class="input-suffix">%</span>
+                </div>
+                <!-- Pesan error untuk diskon (tersembunyi secara default) -->
+                <div class="error" id="discountError">Diskon harus antara 0% - 100%</div>
+            </div>
+ 
+            <!-- ===== TOMBOL SUBMIT DENGAN EMOJI ===== -->
+            <button type="submit" class="btn">💰 Hitung Diskon</button>
+        </form>
+ 
+        <!-- ===== AREA HASIL PERHITUNGAN (TERSEMBUNYI SECARA DEFAULT) ===== -->
+        <div id="result" class="result">
+            <!-- Judul hasil dengan emoji -->
+            <h3>📊 Hasil Perhitungan:</h3>
+           
+            <!-- Menampilkan harga asli -->
+            <div class="result-item">
+                <span class="result-label">Harga Asli:</span>
+                <span class="result-value currency" id="displayOriginalPrice">Rp 0</span>
+            </div>
+           
+            <!-- Menampilkan persentase diskon -->
+            <div class="result-item">
+                <span class="result-label">Persentase Diskon:</span>
+                <span class="result-value" id="displayDiscountPercent">0%</span>
+            </div>
+           
+            <!-- Menampilkan nilai diskon dalam rupiah -->
+            <div class="result-item">
+                <span class="result-label">Nilai Diskon:</span>
+                <span class="result-value currency" id="displayDiscountAmount">Rp 0</span>
+            </div>
+           
+            <!-- Menampilkan total harga setelah diskon dengan styling khusus -->
+            <div class="result-item" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
+                <span class="result-label" style="color: pink;">Total Harga Setelah Diskon:</span>
+                <span class="result-value" style="color: #ffeb3b; font-size: 1.2rem;" id="displayFinalPrice">Rp 0</span>
+            </div>
+        </div>
+    </div>
+ 
+    <script>
+        /* ===== DEKLARASI VARIABEL UNTUK ELEMEN DOM ===== */
+        // Mengambil referensi elemen-elemen yang akan sering digunakan
+        const form = document.getElementById('discountForm'); // Form utama
+        const originalPriceInput = document.getElementById('originalPrice'); // Input harga
+        const discountPercentInput = document.getElementById('discountPercent'); // Input diskon
+        const resultDiv = document.getElementById('result'); // Area hasil
+        const priceError = document.getElementById('priceError'); // Error harga
+        const discountError = document.getElementById('discountError'); // Error diskon
+ 
+        /* ===== FUNGSI UNTUK MEMFORMAT ANGKA KE FORMAT RUPIAH ===== */
+        function formatRupiah(amount) {
+            // Menggunakan Intl.NumberFormat untuk format mata uang Indonesia
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency', // Style mata uang
+                currency: 'IDR', // Mata uang Indonesia
+                minimumFractionDigits: 0, // Minimum digit desimal
+                maximumFractionDigits: 0 // Maksimum digit desimal
+            }).format(amount);
+        }
+ 
+        /* ===== FUNGSI UNTUK VALIDASI INPUT USER ===== */
+        function validateInputs() {
+            let isValid = true; // Flag untuk melacak validitas
+           
+            // ===== RESET TAMPILAN ERROR SEBELUMNYA =====
+            priceError.style.display = 'none'; // Sembunyikan error harga
+            discountError.style.display = 'none'; // Sembunyikan error diskon
+            originalPriceInput.style.borderColor = '#e2e9e9'; // Reset border harga
+            discountPercentInput.style.borderColor = '#e9e6e9'; // Reset border diskon
+ 
+            // ===== AMBIL NILAI INPUT DAN KONVERSI KE FLOAT =====
+            const price = parseFloat(originalPriceInput.value);
+            const discount = parseFloat(discountPercentInput.value);
+ 
+            // ===== VALIDASI HARGA ASLI =====
+            if (isNaN(price) || price <= 0) {
+                priceError.style.display = 'block'; // Tampilkan error
+                originalPriceInput.style.borderColor = '#dc3545'; // Border merah
+                originalPriceInput.classList.add('shake'); // Tambah efek shake
+                // Hapus efek shake setelah 500ms
+                setTimeout(() => originalPriceInput.classList.remove('shake'), 500);
+                isValid = false; // Set flag invalid
+            }
+ 
+            // ===== VALIDASI PERSENTASE DISKON =====
+            if (isNaN(discount) || discount < 0 || discount > 100) {
+                discountError.style.display = 'block'; // Tampilkan error
+                discountPercentInput.style.borderColor = '#dc3545'; // Border merah
+                discountPercentInput.classList.add('shake'); // Tambah efek shake
+                // Hapus efek shake setelah 500ms
+                setTimeout(() => discountPercentInput.classList.remove('shake'), 500);
+                isValid = false; // Set flag invalid
+            }
+ 
+            return isValid; // Kembalikan status validitas
+        }
+ 
+        /* ===== FUNGSI UNTUK MENGHITUNG DISKON ===== */
+        function calculateDiscount() {
+            // Ambil nilai input yang sudah tervalidasi
+            const originalPrice = parseFloat(originalPriceInput.value);
+            const discountPercent = parseFloat(discountPercentInput.value);
+ 
+            // ===== RUMUS PERHITUNGAN DISKON =====
+            // Nilai diskon = (Harga asli × Persentase diskon) ÷ 100
+            const discountAmount = (originalPrice * discountPercent) / 100;
+           
+            // Harga final = Harga asli - Nilai diskon
+            const finalPrice = originalPrice - discountAmount;
+ 
+            // Kembalikan objek dengan semua hasil perhitungan
+            return {
+                originalPrice,
+                discountPercent,
+                discountAmount,
+                finalPrice
+            };
+        }
+ 
+        /* ===== FUNGSI UNTUK MENAMPILKAN HASIL PERHITUNGAN ===== */
+        function displayResult(calculation) {
+            // Update setiap elemen hasil dengan format rupiah
+            document.getElementById('displayOriginalPrice').textContent = formatRupiah(calculation.originalPrice);
+            document.getElementById('displayDiscountPercent').textContent = calculation.discountPercent + '%';
+            document.getElementById('displayDiscountAmount').textContent = formatRupiah(calculation.discountAmount);
+            document.getElementById('displayFinalPrice').textContent = formatRupiah(calculation.finalPrice);
+ 
+            // Tampilkan area hasil dengan animasi
+            resultDiv.classList.add('show');
+        }
+ 
+        /* ===== EVENT LISTENER UNTUK FORM SUBMISSION ===== */
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Mencegah form submit default (reload halaman)
+ 
+            // Jalankan validasi, jika valid maka hitung dan tampilkan hasil
+            if (validateInputs()) {
+                const calculation = calculateDiscount(); // Hitung diskon
+                displayResult(calculation); // Tampilkan hasil
+            }
+        });
+ 
+        /* ===== REAL-TIME VALIDATION UNTUK INPUT HARGA ===== */
+        originalPriceInput.addEventListener('input', function() {
+            // Jika input memiliki nilai dan lebih dari 0
+            if (this.value && parseFloat(this.value) > 0) {
+                priceError.style.display = 'none'; // Sembunyikan error
+                this.style.borderColor = '#28a745'; // Border hijau (valid)
+            }
+        });
+ 
+        /* ===== REAL-TIME VALIDATION UNTUK INPUT DISKON ===== */
+        discountPercentInput.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            // Jika input memiliki nilai dan dalam range 0-100
+            if (this.value && value >= 0 && value <= 100) {
+                discountError.style.display = 'none'; // Sembunyikan error
+                this.style.borderColor = '#28a745'; // Border hijau (valid)
+            }
+        });
+ 
+        /* ===== FORMAT INPUT HARGA SAAT KEHILANGAN FOKUS ===== */
+        originalPriceInput.addEventListener('blur', function() {
+            // Jika input memiliki nilai
+            if (this.value) {
+                const value = parseFloat(this.value);
+                // Jika nilai valid dan lebih dari 0, format tanpa desimal
+                if (!isNaN(value) && value > 0) {
+                    this.value = value.toFixed(0); // Hapus desimal
+                }
+            }
+        });
+    </script>
+</body>
+</html>
